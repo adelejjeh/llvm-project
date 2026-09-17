@@ -217,6 +217,21 @@ void AMDGPUTTIImpl::getUnrollingPreferences(
       } else if (AS == AMDGPUAS::LOCAL_ADDRESS ||
                  AS == AMDGPUAS::REGION_ADDRESS) {
         LocalGEPsSeen++;
+
+        // -amdgpu-unroll-runtime-local=false opts loops that access LDS out of
+        // runtime unrolling. Apply it here, before the combining heuristics
+        // below, so that it covers every LDS loop.
+        //
+        // This used to be expressed by assigning UnrollRuntimeLocal to
+        // UP.Runtime after those heuristics, back when UP.Runtime defaulted to
+        // false and that assignment was the only way an AMDGPU loop could be
+        // runtime unrolled. Since runtime unrolling became the default for all
+        // AMDGPU loops, the late assignment no longer expressed that: it could
+        // only disable the loops the heuristics *admitted*, while the ones they
+        // rejected kept the default of true - the exact inverse of the intent.
+        if (!UnrollRuntimeLocal)
+          UP.Runtime = false;
+
         // Inhibit unroll for local memory if we have seen addressing not to
         // a variable, most likely we will be unable to combine it.
         // Do not unroll too deep inner loops for local memory to give a chance
@@ -227,7 +242,6 @@ void AMDGPUTTIImpl::getUnrollingPreferences(
           continue;
         LLVM_DEBUG(dbgs() << "Allow unroll runtime for loop:\n"
                           << *L << " due to LDS use.\n");
-        UP.Runtime = UnrollRuntimeLocal;
       }
 
       // Check if GEP depends on a value defined by this loop itself.
