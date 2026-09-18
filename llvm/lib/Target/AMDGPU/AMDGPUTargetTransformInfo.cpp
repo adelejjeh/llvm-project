@@ -136,6 +136,11 @@ void AMDGPUTTIImpl::getUnrollingPreferences(
   // is not known at compile time.
   UP.Runtime = UnrollRuntimeDefault;
 
+  // LCOMPILER-2229 experiment arm, not for merge: do not runtime unroll deeply
+  // nested inner loops.
+  if (L->getLoopDepth() > 2)
+    UP.Runtime = false;
+
   // Maximum alloca size than can fit registers. Reserve 16 registers.
   const unsigned MaxAlloca = (256 - 16) * 4;
   unsigned ThresholdPrivate = UnrollThresholdPrivate;
