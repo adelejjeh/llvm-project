@@ -138,6 +138,40 @@ void AMDGPUTTIImpl::getUnrollingPreferences(
   // is not known at compile time.
   UP.Runtime = UnrollRuntimeDefault;
 
+  // A loop that accesses LDS is runtime unrolled only if the LDS combining
+  // heuristic admits it and -amdgpu-unroll-runtime-local is set, whatever the
+  // default above. The heuristic admits a loop when the first LDS GEP of one of
+  // its own blocks addresses a global or an argument directly and the loop is
+  // nested no deeper than 2; deeper loops are left for an outer loop to unroll.
+  // This is decided here, separately from the threshold boosts below, because
+  // those exit early and would otherwise skip the LDS check for some loops.
+  bool AccessesLDS = false;
+  bool LDSAdmitted = false;
+  for (const BasicBlock *BB : L->getBlocks()) {
+    if (llvm::any_of(L->getSubLoops(), [BB](const Loop *SubLoop) {
+          return SubLoop->contains(BB);
+        }))
+      continue; // Block belongs to an inner loop.
+    for (const Instruction &I : *BB) {
+      const GetElementPtrInst *GEP = dyn_cast<GetElementPtrInst>(&I);
+      if (!GEP || (GEP->getAddressSpace() != AMDGPUAS::LOCAL_ADDRESS &&
+                   GEP->getAddressSpace() != AMDGPUAS::REGION_ADDRESS))
+        continue;
+      AccessesLDS = true;
+      const Value *Ptr = GEP->getPointerOperand();
+      if (L->getLoopDepth() <= 2 &&
+          (isa<GlobalVariable>(Ptr) || isa<Argument>(Ptr)))
+        LDSAdmitted = true;
+      break; // Only the first LDS GEP of a block is considered.
+    }
+  }
+  if (AccessesLDS) {
+    UP.Runtime = UnrollRuntimeLocal && LDSAdmitted;
+    LLVM_DEBUG(dbgs() << (UP.Runtime ? "Allow" : "Disallow")
+                      << " unroll runtime for loop:\n"
+                      << *L << " due to LDS use.\n");
+  }
+
   // Maximum alloca size than can fit registers. Reserve 16 registers.
   const unsigned MaxAlloca = (256 - 16) * 4;
   unsigned ThresholdPrivate = UnrollThresholdPrivate;
@@ -232,9 +266,6 @@ void AMDGPUTTIImpl::getUnrollingPreferences(
             (!isa<GlobalVariable>(GEP->getPointerOperand()) &&
              !isa<Argument>(GEP->getPointerOperand())))
           continue;
-        LLVM_DEBUG(dbgs() << "Allow unroll runtime for loop:\n"
-                          << *L << " due to LDS use.\n");
-        UP.Runtime = UnrollRuntimeLocal;
       }
 
       // Check if GEP depends on a value defined by this loop itself.
