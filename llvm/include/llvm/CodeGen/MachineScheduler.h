@@ -1325,6 +1325,10 @@ protected:
   /// Candidate last picked from Bot boundary.
   SchedCandidate BotCand;
 
+  /// In acyclic-latency-limited loops, compare latency after the stall,
+  /// cluster and weak-edge heuristics instead of before them.
+  bool AcyclicLatencyAfterCluster = false;
+
   void checkAcyclicLatency();
 
   void initCandidate(SchedCandidate &Cand, SUnit *SU, bool AtTop,
