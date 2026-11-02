@@ -4292,8 +4292,8 @@ bool GenericScheduler::tryCandidate(SchedCandidate &Cand,
     // For loops that are acyclic path limited, aggressively schedule for
     // latency. Within an single cycle, whenever CurrMOps > 0, allow normal
     // heuristics to take precedence.
-    if (Rem.IsAcyclicLatencyLimited && !Zone->getCurrMOps() &&
-        tryLatency(TryCand, Cand, *Zone))
+    if (Rem.IsAcyclicLatencyLimited && !AcyclicLatencyAfterCluster &&
+        !Zone->getCurrMOps() && tryLatency(TryCand, Cand, *Zone))
       return TryCand.Reason != NoCand;
 
     // Prioritize instructions that read unbuffered resources by stall cycles.
@@ -4324,6 +4324,12 @@ bool GenericScheduler::tryCandidate(SchedCandidate &Cand,
     if (tryLess(getWeakLeft(TryCand.SU, TryCand.AtTop),
                 getWeakLeft(Cand.SU, Cand.AtTop),
                 TryCand, Cand, Weak))
+      return TryCand.Reason != NoCand;
+
+    // Acyclic-latency-limited loops, when the target asks for latency to come
+    // after the stall, cluster and weak-edge heuristics.
+    if (Rem.IsAcyclicLatencyLimited && AcyclicLatencyAfterCluster &&
+        !Zone->getCurrMOps() && tryLatency(TryCand, Cand, *Zone))
       return TryCand.Reason != NoCand;
   }
 
