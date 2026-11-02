@@ -53,16 +53,16 @@ define amdgpu_kernel void @main(i1 %arg, ptr %ptr, ptr addrspace(1) %ptr1, ptr a
 ; GFX950-NEXT:    ; =>This Inner Loop Header: Depth=1
 ; GFX950-NEXT:    s_lshl_b64 s[2:3], s[0:1], 3
 ; GFX950-NEXT:    s_add_u32 s2, s38, s2
-; GFX950-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
-; GFX950-NEXT:    v_lshl_add_u64 v[18:19], v[40:41], 3, s[38:39]
 ; GFX950-NEXT:    s_addc_u32 s3, s39, s3
-; GFX950-NEXT:    global_load_dwordx4 v[18:21], v[18:19], off
+; GFX950-NEXT:    global_load_dwordx4 v[18:21], v41, s[2:3]
+; GFX950-NEXT:    s_waitcnt lgkmcnt(0)
+; GFX950-NEXT:    v_lshl_add_u64 v[22:23], v[40:41], 3, s[38:39]
 ; GFX950-NEXT:    s_waitcnt vmcnt(1)
 ; GFX950-NEXT:    v_or_b32_e32 v26, v42, v4
-; GFX950-NEXT:    global_load_dwordx4 v[22:25], v41, s[2:3]
 ; GFX950-NEXT:    v_or_b32_e32 v27, v43, v5
 ; GFX950-NEXT:    v_or_b32_e32 v28, v44, v6
 ; GFX950-NEXT:    v_or_b32_e32 v29, v45, v7
+; GFX950-NEXT:    global_load_dwordx4 v[22:25], v[22:23], off
 ; GFX950-NEXT:    v_or_b32_e32 v14, v3, v14
 ; GFX950-NEXT:    v_or_b32_e32 v12, v2, v12
 ; GFX950-NEXT:    v_or_b32_e32 v11, v1, v11
@@ -73,17 +73,17 @@ define amdgpu_kernel void @main(i1 %arg, ptr %ptr, ptr addrspace(1) %ptr1, ptr a
 ; GFX950-NEXT:    v_mov_b32_e32 v45, 0
 ; GFX950-NEXT:    s_or_b32 s0, s0, 1
 ; GFX950-NEXT:    s_waitcnt vmcnt(1)
-; GFX950-NEXT:    v_or_b32_e32 v17, v21, v17
-; GFX950-NEXT:    v_or_b32_e32 v16, v20, v16
-; GFX950-NEXT:    s_waitcnt vmcnt(0)
-; GFX950-NEXT:    v_or_b32_e32 v25, v25, v29
-; GFX950-NEXT:    v_or_b32_e32 v24, v24, v28
-; GFX950-NEXT:    v_or_b32_e32 v23, v23, v27
-; GFX950-NEXT:    v_or_b32_e32 v22, v22, v26
-; GFX950-NEXT:    scratch_store_dwordx4 off, v[22:25], s33
+; GFX950-NEXT:    v_or_b32_e32 v21, v21, v29
+; GFX950-NEXT:    v_or_b32_e32 v20, v20, v28
+; GFX950-NEXT:    v_or_b32_e32 v19, v19, v27
+; GFX950-NEXT:    v_or_b32_e32 v18, v18, v26
+; GFX950-NEXT:    scratch_store_dwordx4 off, v[18:21], s33
 ; GFX950-NEXT:    flat_load_dword v40, v[8:9]
-; GFX950-NEXT:    v_or_b32_e32 v15, v19, v15
-; GFX950-NEXT:    v_or_b32_e32 v13, v18, v13
+; GFX950-NEXT:    s_waitcnt vmcnt(0)
+; GFX950-NEXT:    v_or_b32_e32 v17, v25, v17
+; GFX950-NEXT:    v_or_b32_e32 v16, v24, v16
+; GFX950-NEXT:    v_or_b32_e32 v15, v23, v15
+; GFX950-NEXT:    v_or_b32_e32 v13, v22, v13
 ; GFX950-NEXT:    s_mov_b64 vcc, vcc
 ; GFX950-NEXT:    s_cbranch_vccz .LBB0_1
 ; GFX950-NEXT:  ; %bb.2: ; %bb2

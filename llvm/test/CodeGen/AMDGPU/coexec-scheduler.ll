@@ -421,18 +421,18 @@ define amdgpu_kernel void @ds_wmma_permute(ptr addrspace(3) %base, ptr addrspace
 ; GCN-NEXT:    v_wmma_f32_16x16x32_f16 v[24:31], v[32:39], v[40:47], v[24:31]
 ; GCN-NEXT:    ds_load_tr16_b128 v[32:35], v96 offset:128
 ; GCN-NEXT:    ds_load_tr16_b128 v[36:39], v96 offset:192
-; GCN-NEXT:    ds_load_tr16_b128 v[40:43], v97 offset:128
 ; GCN-NEXT:    v_wmma_f32_16x16x32_f16 v[16:23], v[48:55], v[56:63], v[16:23]
+; GCN-NEXT:    ds_load_tr16_b128 v[40:43], v97 offset:128
 ; GCN-NEXT:    ds_load_tr16_b128 v[44:47], v97 offset:192
 ; GCN-NEXT:    ds_load_tr16_b128 v[48:51], v96 offset:384
 ; GCN-NEXT:    ds_load_tr16_b128 v[52:55], v96 offset:448
-; GCN-NEXT:    ds_load_tr16_b128 v[56:59], v97 offset:384
 ; GCN-NEXT:    v_wmma_f32_16x16x32_f16 v[8:15], v[64:71], v[72:79], v[8:15]
+; GCN-NEXT:    ds_load_tr16_b128 v[56:59], v97 offset:384
 ; GCN-NEXT:    ds_load_tr16_b128 v[60:63], v97 offset:448
 ; GCN-NEXT:    ds_load_tr16_b128 v[64:67], v96 offset:640
 ; GCN-NEXT:    ds_load_tr16_b128 v[68:71], v96 offset:704
-; GCN-NEXT:    ds_load_tr16_b128 v[72:75], v97 offset:640
 ; GCN-NEXT:    v_wmma_f32_16x16x32_f16 v[0:7], v[80:87], v[88:95], v[0:7]
+; GCN-NEXT:    ds_load_tr16_b128 v[72:75], v97 offset:640
 ; GCN-NEXT:    ds_load_tr16_b128 v[76:79], v97 offset:704
 ; GCN-NEXT:    ds_load_tr16_b128 v[80:83], v96 offset:896
 ; GCN-NEXT:    ds_load_tr16_b128 v[84:87], v96 offset:960

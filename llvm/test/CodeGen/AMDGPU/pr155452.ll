@@ -34,23 +34,23 @@ define amdgpu_kernel void @my_kernel(i64 %foo, i32 %bar) {
 ; CHECK-NEXT:    s_add_i32 s1, s1, s8
 ; CHECK-NEXT:    s_add_u32 s0, s0, 1
 ; CHECK-NEXT:    s_addc_u32 s1, s1, 0
-; CHECK-NEXT:    s_abs_i32 s9, s0
-; CHECK-NEXT:    v_mul_hi_u32 v1, s9, v0
-; CHECK-NEXT:    s_ashr_i32 s8, s0, 31
-; CHECK-NEXT:    s_xor_b32 s8, s8, s7
+; CHECK-NEXT:    s_abs_i32 s8, s0
+; CHECK-NEXT:    v_mul_hi_u32 v1, s8, v0
+; CHECK-NEXT:    s_ashr_i32 s9, s0, 31
+; CHECK-NEXT:    s_xor_b32 s9, s9, s7
 ; CHECK-NEXT:    v_readfirstlane_b32 s10, v1
 ; CHECK-NEXT:    s_mul_i32 s11, s10, s6
-; CHECK-NEXT:    s_sub_i32 s9, s9, s11
+; CHECK-NEXT:    s_sub_i32 s8, s8, s11
 ; CHECK-NEXT:    s_add_i32 s12, s10, 1
-; CHECK-NEXT:    s_sub_i32 s11, s9, s6
-; CHECK-NEXT:    s_cmp_ge_u32 s9, s6
+; CHECK-NEXT:    s_sub_i32 s11, s8, s6
+; CHECK-NEXT:    s_cmp_ge_u32 s8, s6
 ; CHECK-NEXT:    s_cselect_b32 s10, s12, s10
-; CHECK-NEXT:    s_cselect_b32 s9, s11, s9
+; CHECK-NEXT:    s_cselect_b32 s8, s11, s8
 ; CHECK-NEXT:    s_add_i32 s11, s10, 1
-; CHECK-NEXT:    s_cmp_ge_u32 s9, s6
-; CHECK-NEXT:    s_cselect_b32 s9, s11, s10
-; CHECK-NEXT:    s_xor_b32 s9, s9, s8
-; CHECK-NEXT:    s_sub_i32 s8, s9, s8
+; CHECK-NEXT:    s_cmp_ge_u32 s8, s6
+; CHECK-NEXT:    s_cselect_b32 s8, s11, s10
+; CHECK-NEXT:    s_xor_b32 s8, s8, s9
+; CHECK-NEXT:    s_sub_i32 s8, s8, s9
 ; CHECK-NEXT:    s_ashr_i32 s9, s8, 31
 ; CHECK-NEXT:    s_or_b64 s[0:1], s[0:1], s[8:9]
 ; CHECK-NEXT:    buffer_load_dwordx2 v[1:2], off, s[0:3], 0

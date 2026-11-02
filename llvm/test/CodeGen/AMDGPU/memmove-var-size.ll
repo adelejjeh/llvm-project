@@ -423,8 +423,8 @@ define void @memmove_p0_p3(ptr addrspace(0) align 1 %dst, ptr addrspace(3) align
 ; CHECK-NEXT:    .p2align 6
 ; CHECK-NEXT:  .LBB2_15: ; %memmove_bwd_main_loop
 ; CHECK-NEXT:    ; =>This Inner Loop Header: Depth=1
-; CHECK-NEXT:    ds_read_b128 v[3:6], v2
 ; CHECK-NEXT:    v_mov_b32_e32 v10, v8
+; CHECK-NEXT:    ds_read_b128 v[3:6], v2
 ; CHECK-NEXT:    v_mov_b32_e32 v11, v9
 ; CHECK-NEXT:    v_add_nc_u32_e32 v2, -16, v2
 ; CHECK-NEXT:    v_add_co_u32 v8, vcc_lo, v10, -16
@@ -1360,10 +1360,10 @@ define void @memmove_p3_p0(ptr addrspace(3) align 1 %dst, ptr addrspace(0) align
 ; CHECK-NEXT:    flat_load_dwordx4 v[12:15], v[10:11]
 ; CHECK-NEXT:    v_add_co_u32 v8, s5, v8, -16
 ; CHECK-NEXT:    v_add_co_ci_u32_e64 v9, null, -1, v9, s5
-; CHECK-NEXT:    v_add_co_u32 v10, s5, v10, 16
-; CHECK-NEXT:    v_add_co_ci_u32_e64 v11, null, 0, v11, s5
-; CHECK-NEXT:    v_cmp_eq_u64_e64 s6, 0, v[8:9]
-; CHECK-NEXT:    s_or_b32 s9, s6, s9
+; CHECK-NEXT:    v_add_co_u32 v10, s6, v10, 16
+; CHECK-NEXT:    v_add_co_ci_u32_e64 v11, null, 0, v11, s6
+; CHECK-NEXT:    v_cmp_eq_u64_e64 s5, 0, v[8:9]
+; CHECK-NEXT:    s_or_b32 s9, s5, s9
 ; CHECK-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
 ; CHECK-NEXT:    ds_write_b128 v5, v[12:15]
 ; CHECK-NEXT:    v_add_nc_u32_e32 v5, 16, v5
@@ -1384,10 +1384,10 @@ define void @memmove_p3_p0(ptr addrspace(3) align 1 %dst, ptr addrspace(0) align
 ; CHECK-NEXT:    flat_load_ubyte v2, v[0:1]
 ; CHECK-NEXT:    v_add_co_u32 v6, s5, v6, -1
 ; CHECK-NEXT:    v_add_co_ci_u32_e64 v7, null, -1, v7, s5
-; CHECK-NEXT:    v_add_co_u32 v0, s5, v0, 1
-; CHECK-NEXT:    v_add_co_ci_u32_e64 v1, null, 0, v1, s5
-; CHECK-NEXT:    v_cmp_eq_u64_e64 s6, 0, v[6:7]
-; CHECK-NEXT:    s_or_b32 s9, s6, s9
+; CHECK-NEXT:    v_add_co_u32 v0, s6, v0, 1
+; CHECK-NEXT:    v_add_co_ci_u32_e64 v1, null, 0, v1, s6
+; CHECK-NEXT:    v_cmp_eq_u64_e64 s5, 0, v[6:7]
+; CHECK-NEXT:    s_or_b32 s9, s5, s9
 ; CHECK-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
 ; CHECK-NEXT:    ds_write_b8 v5, v2
 ; CHECK-NEXT:    v_add_nc_u32_e32 v5, 1, v5
@@ -1419,10 +1419,10 @@ define void @memmove_p3_p0(ptr addrspace(3) align 1 %dst, ptr addrspace(0) align
 ; CHECK-NEXT:    flat_load_ubyte v11, v[4:5]
 ; CHECK-NEXT:    v_add_co_u32 v6, s4, v6, -1
 ; CHECK-NEXT:    v_add_co_ci_u32_e64 v7, null, -1, v7, s4
-; CHECK-NEXT:    v_add_co_u32 v4, s4, v4, -1
-; CHECK-NEXT:    v_add_co_ci_u32_e64 v5, null, -1, v5, s4
-; CHECK-NEXT:    v_cmp_eq_u64_e64 s5, 0, v[6:7]
-; CHECK-NEXT:    s_or_b32 s8, s5, s8
+; CHECK-NEXT:    v_add_co_u32 v4, s5, v4, -1
+; CHECK-NEXT:    v_add_co_ci_u32_e64 v5, null, -1, v5, s5
+; CHECK-NEXT:    v_cmp_eq_u64_e64 s4, 0, v[6:7]
+; CHECK-NEXT:    s_or_b32 s8, s4, s8
 ; CHECK-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
 ; CHECK-NEXT:    ds_write_b8 v10, v11
 ; CHECK-NEXT:    v_add_nc_u32_e32 v10, -1, v10
@@ -1850,10 +1850,10 @@ define void @memmove_p5_p0(ptr addrspace(5) align 1 %dst, ptr addrspace(0) align
 ; CHECK-NEXT:    flat_load_ubyte v2, v[0:1]
 ; CHECK-NEXT:    v_add_co_u32 v8, s5, v8, -1
 ; CHECK-NEXT:    v_add_co_ci_u32_e64 v9, null, -1, v9, s5
-; CHECK-NEXT:    v_add_co_u32 v0, s5, v0, 1
-; CHECK-NEXT:    v_add_co_ci_u32_e64 v1, null, 0, v1, s5
-; CHECK-NEXT:    v_cmp_eq_u64_e64 s6, 0, v[8:9]
-; CHECK-NEXT:    s_or_b32 s9, s6, s9
+; CHECK-NEXT:    v_add_co_u32 v0, s6, v0, 1
+; CHECK-NEXT:    v_add_co_ci_u32_e64 v1, null, 0, v1, s6
+; CHECK-NEXT:    v_cmp_eq_u64_e64 s5, 0, v[8:9]
+; CHECK-NEXT:    s_or_b32 s9, s5, s9
 ; CHECK-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
 ; CHECK-NEXT:    buffer_store_byte v2, v5, s[0:3], 0 offen
 ; CHECK-NEXT:    v_add_nc_u32_e32 v5, 1, v5
@@ -1885,10 +1885,10 @@ define void @memmove_p5_p0(ptr addrspace(5) align 1 %dst, ptr addrspace(0) align
 ; CHECK-NEXT:    flat_load_ubyte v11, v[4:5]
 ; CHECK-NEXT:    v_add_co_u32 v8, s4, v8, -1
 ; CHECK-NEXT:    v_add_co_ci_u32_e64 v9, null, -1, v9, s4
-; CHECK-NEXT:    v_add_co_u32 v4, s4, v4, -1
-; CHECK-NEXT:    v_add_co_ci_u32_e64 v5, null, -1, v5, s4
-; CHECK-NEXT:    v_cmp_eq_u64_e64 s5, 0, v[8:9]
-; CHECK-NEXT:    s_or_b32 s8, s5, s8
+; CHECK-NEXT:    v_add_co_u32 v4, s5, v4, -1
+; CHECK-NEXT:    v_add_co_ci_u32_e64 v5, null, -1, v5, s5
+; CHECK-NEXT:    v_cmp_eq_u64_e64 s4, 0, v[8:9]
+; CHECK-NEXT:    s_or_b32 s8, s4, s8
 ; CHECK-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
 ; CHECK-NEXT:    buffer_store_byte v11, v10, s[0:3], 0 offen
 ; CHECK-NEXT:    v_add_nc_u32_e32 v10, -1, v10

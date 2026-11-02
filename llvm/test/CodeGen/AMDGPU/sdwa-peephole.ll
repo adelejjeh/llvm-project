@@ -1750,9 +1750,9 @@ define void @crash_lshlrevb16_not_reg_op() {
 ; GFX10-NEXT:    ; =>This Inner Loop Header: Depth=1
 ; GFX10-NEXT:    s_lshl_b32 s7, s4, 3
 ; GFX10-NEXT:    v_mov_b32_e32 v0, s4
+; GFX10-NEXT:    s_lshr_b32 s7, s6, s7
 ; GFX10-NEXT:    v_mov_b32_e32 v1, s5
-; GFX10-NEXT:    s_lshr_b32 s4, s6, s7
-; GFX10-NEXT:    v_mov_b32_e32 v2, s4
+; GFX10-NEXT:    v_mov_b32_e32 v2, s7
 ; GFX10-NEXT:    s_mov_b64 s[4:5], 1
 ; GFX10-NEXT:    flat_store_byte v[0:1], v2
 ; GFX10-NEXT:    s_cbranch_vccnz .LBB22_1
