@@ -48,6 +48,15 @@
 
 using namespace llvm;
 
+// GCN sets MicroOpBufferSize to 1, which makes almost every loop region
+// acyclic-latency limited, and in that mode the generic scheduler compares
+// critical-path latency before stall cycles and clustering.
+static cl::opt<bool> EnableCyclicPathCheck(
+    "amdgpu-sched-cyclicpath", cl::Hidden,
+    cl::desc("Compute the cyclic critical path of loop regions and schedule "
+             "acyclic-latency-limited loops for latency"),
+    cl::init(false));
+
 static cl::opt<bool> DisableUnclusterHighRP(
     "amdgpu-disable-unclustered-high-rp-reschedule", cl::Hidden,
     cl::desc("Disable unclustered high register pressure "
@@ -132,6 +141,7 @@ GCNSchedStrategy::GCNSchedStrategy(const MachineSchedContext *C)
   if (GCNTrackers.getNumOccurrences() > 0)
     GCNTrackersOverride = GCNTrackers;
   VGPRThresholdPercent = VGPRThresholdPercentOpt;
+  this->EnableCyclicPathCheck = ::EnableCyclicPathCheck;
 }
 
 void GCNSchedStrategy::initialize(ScheduleDAGMI *DAG) {

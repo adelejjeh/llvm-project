@@ -1383,6 +1383,10 @@ protected:
   /// Candidate last picked from Bot boundary.
   SchedCandidate BotCand;
 
+  /// Compute the cyclic critical path of loop regions and mark them
+  /// acyclic-latency limited when it is short.
+  bool EnableCyclicPathCheck = true;
+
   void checkAcyclicLatency();
 
   void initCandidate(SchedCandidate &Cand, SUnit *SU, bool AtTop,

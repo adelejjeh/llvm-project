@@ -4089,7 +4089,8 @@ void GenericScheduler::registerRoots() {
     errs() << "Critical Path(GS-RR ): " << Rem.CriticalPath << " \n";
   }
 
-  if (EnableCyclicPath && SchedModel->getMicroOpBufferSize() > 0) {
+  if (EnableCyclicPath && EnableCyclicPathCheck &&
+      SchedModel->getMicroOpBufferSize() > 0) {
     Rem.CyclicCritPath = DAG->computeCyclicCriticalPath();
     checkAcyclicLatency();
   }
